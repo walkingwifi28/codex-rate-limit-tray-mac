@@ -1,6 +1,6 @@
 import Foundation
 
-enum UsageErrorKind: Equatable {
+enum UsageErrorKind: Error, Equatable {
     case none
     case authentication
     case network
