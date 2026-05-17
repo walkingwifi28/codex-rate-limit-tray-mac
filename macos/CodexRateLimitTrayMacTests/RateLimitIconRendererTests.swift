@@ -26,12 +26,16 @@ final class RateLimitIconRendererTests: XCTestCase {
             weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
             now: Date(timeIntervalSince1970: 0),
             appearance: .dark,
-            size: 64
+            size: 64,
+            drawNeedle: false
         )
 
         let color = try image.pixelColor(x: 32, y: 6)
 
-        XCTAssertTrue(color.isClose(to: RateLimitIconRenderer.Colors.outerDisc))
+        XCTAssertTrue(
+            color.isClose(to: RateLimitIconRenderer.Colors.outerDisc),
+            "got \(color.hexRGB) alpha \(color.alphaComponent)"
+        )
     }
 
     func testFullInnerDiscColorsCenterPixel() throws {
@@ -108,13 +112,19 @@ private extension NSColor {
 private extension NSImage {
     func pixelColor(x: Int, y: Int) throws -> NSColor {
         guard
-            let tiffData = tiffRepresentation,
-            let bitmap = NSBitmapImageRep(data: tiffData),
-            let color = bitmap.colorAt(x: x, y: y)
+            let cgImage = cgImage(forProposedRect: nil, context: nil, hints: nil),
+            let providerData = cgImage.dataProvider?.data,
+            let bytes = CFDataGetBytePtr(providerData)
         else {
             XCTFail("Could not read image pixel")
             return .clear
         }
-        return color.usingColorSpace(.sRGB) ?? color
+        let offset = y * cgImage.bytesPerRow + x * 4
+        return NSColor(
+            srgbRed: CGFloat(bytes[offset]) / 255,
+            green: CGFloat(bytes[offset + 1]) / 255,
+            blue: CGFloat(bytes[offset + 2]) / 255,
+            alpha: CGFloat(bytes[offset + 3]) / 255
+        )
     }
 }

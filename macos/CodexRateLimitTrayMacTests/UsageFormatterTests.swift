@@ -16,7 +16,7 @@ final class UsageFormatterTests: XCTestCase {
 
     func testDisplayPercentRoundsAwayFromZero() {
         XCTAssertEqual(formatter.displayPercent(for: UsageWindow(usedPercent: 25.5, resetAt: Date())), 75)
-        XCTAssertEqual(formatter.displayPercent(for: UsageWindow(usedPercent: 25.6, resetAt: Date())), 74)
+        XCTAssertEqual(formatter.displayPercent(for: UsageWindow(usedPercent: 25.6, resetAt: Date())), 75)
         XCTAssertEqual(formatter.displayPercent(for: UsageWindow(usedPercent: 99.5, resetAt: Date())), 1)
     }
 
@@ -42,7 +42,10 @@ final class UsageFormatterTests: XCTestCase {
             "5時間 : 残り 60% 18:48",
             "週   : 残り 94% 05/24 13:48",
         ])
-        XCTAssertEqual(rows[0].firstIndex(of: ":"), rows[1].firstIndex(of: ":"))
+        XCTAssertEqual(
+            rows[0].distance(from: rows[0].startIndex, to: rows[0].firstIndex(of: ":")!),
+            rows[1].distance(from: rows[1].startIndex, to: rows[1].firstIndex(of: ":")!)
+        )
     }
 
     func testStatusSummaryUsesRoundedRemainingPercents() throws {

@@ -27,12 +27,13 @@ final class UsageViewModel: ObservableObject {
         self.scheduler = scheduler
         self.formatter = formatter
         self.iconRenderer = iconRenderer
-        self.state = UsageState.success(
+        let initialState = UsageState.success(
             fiveHour: UsageWindow(usedPercent: 0, resetAt: Date()),
             week: UsageWindow(usedPercent: 0, resetAt: Date())
         )
+        self.state = initialState
         self.menuBarIcon = iconRenderer.renderIcon(
-            state: state,
+            state: initialState,
             appearance: Self.currentAppearance,
             size: 22
         )

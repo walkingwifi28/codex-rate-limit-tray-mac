@@ -14,11 +14,15 @@ targets:
     productName: CodexRateLimitTray
     deploymentTarget: "13.0"
     sources:
-      - CodexRateLimitTrayMac
+      - path: CodexRateLimitTrayMac
+        excludes:
+          - Info.plist
+          - Entitlements.plist
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: jp.walkingwifi.CodexRateLimitTrayMac
         PRODUCT_NAME: CodexRateLimitTray
+        PRODUCT_MODULE_NAME: CodexRateLimitTrayMac
         SWIFT_VERSION: "5.0"
         INFOPLIST_FILE: CodexRateLimitTrayMac/Info.plist
         CODE_SIGN_ENTITLEMENTS: CodexRateLimitTrayMac/Entitlements.plist
@@ -37,5 +41,6 @@ targets:
       - target: CodexRateLimitTrayMac
     settings:
       base:
+        GENERATE_INFOPLIST_FILE: YES
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTray.app/Contents/MacOS/CodexRateLimitTray"
         BUNDLE_LOADER: "$(TEST_HOST)"

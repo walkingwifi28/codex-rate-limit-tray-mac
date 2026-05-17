@@ -44,9 +44,10 @@ final class UsageViewModelTests: XCTestCase {
         async let second: Void = viewModel.refresh()
         await Task.yield()
 
-        XCTAssertEqual(await usageClient.callCount, 1)
+        let callCount = await usageClient.getCallCount()
+        XCTAssertEqual(callCount, 1)
 
-        usageClient.resume(with: Self.successState())
+        await usageClient.resume(with: Self.successState())
         _ = await (first, second)
     }
 
@@ -105,6 +106,10 @@ private actor SuspendedUsageClient: WhamUsageFetching {
     func resume(with state: UsageState) {
         continuation?.resume(returning: state)
         continuation = nil
+    }
+
+    func getCallCount() -> Int {
+        callCount
     }
 
     private func start(continuation: CheckedContinuation<UsageState, Never>) {

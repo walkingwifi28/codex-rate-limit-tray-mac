@@ -4,6 +4,8 @@
 <dict>
   <key>CFBundleDisplayName</key>
   <string>Codex Rate Limit Tray</string>
+  <key>CFBundleIdentifier</key>
+  <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
   <key>CFBundleShortVersionString</key>
   <string>0.1.0</string>
   <key>CFBundleVersion</key>

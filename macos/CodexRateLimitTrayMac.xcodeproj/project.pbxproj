@@ -19,7 +19,6 @@
 		5FD4E08A4596D0104B98934F /* CodexAuthReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C86843A09BB03263657CD /* CodexAuthReader.swift */; };
 		628AB46DCD8A32EB877A4DF3 /* WhamUsageParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBF2E34D4F41F70AF3101E4 /* WhamUsageParserTests.swift */; };
 		772D2B544D0C78D2173766E9 /* CodexRateLimitTrayMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80ACDCD267A91CE97B72DB /* CodexRateLimitTrayMacApp.swift */; };
-		84B414A8E20369FB009DB94D /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 819E3288B49DCB2D27DCCFAE /* Entitlements.plist */; };
 		85BF8F4142001A0F6295368E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A999E3286585578FD9E30 /* SettingsView.swift */; };
 		8BAAA9A05F13C066AE7E26FD /* RefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81225370522A60AB220D0163 /* RefreshScheduler.swift */; };
 		A1598AB928B5CD830A4F94CD /* CodexAuthReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A8FB3BCA48E6CC88EA3963 /* CodexAuthReaderTests.swift */; };
@@ -64,7 +63,6 @@
 		52C576E47118AF8E03B50E90 /* LoginItemService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemService.swift; sourceTree = "<group>"; };
 		5FE7E5BD0C1F8CB878220EB3 /* RateLimitIconRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateLimitIconRenderer.swift; sourceTree = "<group>"; };
 		81225370522A60AB220D0163 /* RefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshScheduler.swift; sourceTree = "<group>"; };
-		819E3288B49DCB2D27DCCFAE /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Entitlements.plist; sourceTree = "<group>"; };
 		8390E55864EE8DCED3031764 /* UsageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModelTests.swift; sourceTree = "<group>"; };
 		8D80ACDCD267A91CE97B72DB /* CodexRateLimitTrayMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexRateLimitTrayMacApp.swift; sourceTree = "<group>"; };
 		A5378B61E7B2EC358BF5DFA0 /* UpdaterServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdaterServicing.swift; sourceTree = "<group>"; };
@@ -74,7 +72,6 @@
 		CC0F21A54BB106894DD2D7E9 /* RefreshSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshSchedulerTests.swift; sourceTree = "<group>"; };
 		D23E19C15A01CC091DBD8962 /* LoginItemServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemServiceTests.swift; sourceTree = "<group>"; };
 		D5341F4B0E33692C70E8024B /* CodexRateLimitTrayMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodexRateLimitTrayMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		ED7722A6617A9ADA3C6DFC5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F7F5C53632B86E5B2C879B36 /* UsageGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageGraphView.swift; sourceTree = "<group>"; };
 		F8BD748A14EB7E15B2AE32CA /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 		FD71011B0D9034B772BC8B00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,8 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				1DA8AC1B08CC57FFBDE64868 /* Assets.xcassets */,
-				819E3288B49DCB2D27DCCFAE /* Entitlements.plist */,
-				ED7722A6617A9ADA3C6DFC5B /* Info.plist */,
 				D2FFA8C7BC519D18F0DC4794 /* App */,
 				2463896121934F3D749DEF02 /* AppState */,
 				14128DAA140C244BFC2BC60C /* Domain */,
@@ -289,7 +284,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				004AA0874CAEA66036EBA5A5 /* Assets.xcassets in Resources */,
-				84B414A8E20369FB009DB94D /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +417,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.walkingwifi.CodexRateLimitTrayMac;
+				PRODUCT_MODULE_NAME = CodexRateLimitTrayMac;
 				PRODUCT_NAME = CodexRateLimitTray;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -443,6 +438,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.walkingwifi.CodexRateLimitTrayMac;
+				PRODUCT_MODULE_NAME = CodexRateLimitTrayMac;
 				PRODUCT_NAME = CodexRateLimitTray;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -454,6 +450,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -526,6 +523,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
