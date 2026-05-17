@@ -16,9 +16,10 @@ This repository keeps the Windows app untouched and ships the native macOS menu 
 - `APPLE_ID`
 - `APPLE_TEAM_ID`
 - `APPLE_APP_SPECIFIC_PASSWORD`
+- `SPARKLE_PUBLIC_ED_KEY`
 - `SPARKLE_PRIVATE_KEY`
 
-Store the Sparkle public EdDSA key in `SUPublicEDKey` inside `macos/CodexRateLimitTrayMac/Info.plist`. Keep the private key only in CI secrets or a local password manager.
+Store the Sparkle public EdDSA key in `SPARKLE_PUBLIC_ED_KEY` and the matching private key in `SPARKLE_PRIVATE_KEY`. The release workflow injects the public key into `SUPublicEDKey` before archiving and fails if it is missing. Keep the private key only in CI secrets or a local password manager.
 
 ## Manual Build
 
@@ -26,6 +27,7 @@ Store the Sparkle public EdDSA key in `SUPublicEDKey` inside `macos/CodexRateLim
 cd macos
 xcodegen generate
 xcodebuild test -scheme CodexRateLimitTrayMac -destination 'platform=macOS'
+/usr/libexec/PlistBuddy -c "Set :SUPublicEDKey $SPARKLE_PUBLIC_ED_KEY" CodexRateLimitTrayMac/Info.plist
 xcodebuild -scheme CodexRateLimitTrayMac -configuration Release -destination 'platform=macOS' archive -archivePath ../artifacts/macos/CodexRateLimitTray.xcarchive
 ```
 

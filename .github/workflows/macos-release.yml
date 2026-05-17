@@ -23,6 +23,16 @@ jobs:
         run: xcodebuild test -scheme CodexRateLimitTrayMac -destination 'platform=macOS'
         working-directory: macos
 
+      - name: Inject Sparkle public key
+        env:
+          SPARKLE_PUBLIC_ED_KEY: ${{ secrets.SPARKLE_PUBLIC_ED_KEY }}
+        run: |
+          test -n "$SPARKLE_PUBLIC_ED_KEY"
+          test "$SPARKLE_PUBLIC_ED_KEY" != "REPLACE_WITH_SPARKLE_PUBLIC_ED_KEY"
+          /usr/libexec/PlistBuddy \
+            -c "Set :SUPublicEDKey $SPARKLE_PUBLIC_ED_KEY" \
+            macos/CodexRateLimitTrayMac/Info.plist
+
       - name: Archive
         run: |
           xcodebuild -scheme CodexRateLimitTrayMac \
