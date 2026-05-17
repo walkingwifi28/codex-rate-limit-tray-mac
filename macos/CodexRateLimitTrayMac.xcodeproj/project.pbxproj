@@ -1,0 +1,436 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		004AA0874CAEA66036EBA5A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DA8AC1B08CC57FFBDE64868 /* Assets.xcassets */; };
+		84B414A8E20369FB009DB94D /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 819E3288B49DCB2D27DCCFAE /* Entitlements.plist */; };
+		DD8B552D230735717FF6FB29 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4952059BA7D11A633CE3DFB3 /* Sparkle */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A43A520DF087A6BBA0D36B49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1FAFF19B11C8120A2B70E572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 05AE7724C1264A775F5A3D92;
+			remoteInfo = CodexRateLimitTrayMac;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1DA8AC1B08CC57FFBDE64868 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		819E3288B49DCB2D27DCCFAE /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Entitlements.plist; sourceTree = "<group>"; };
+		A084B2543B32FE53CDED4EB5 /* CodexRateLimitTrayMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodexRateLimitTrayMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5341F4B0E33692C70E8024B /* CodexRateLimitTrayMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodexRateLimitTrayMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED7722A6617A9ADA3C6DFC5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B5723E172EB145F15641C49F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD8B552D230735717FF6FB29 /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		428A87EB3FD930DB63A751ED = {
+			isa = PBXGroup;
+			children = (
+				C6F1486CCB99ECAB6CE23EE7 /* CodexRateLimitTrayMac */,
+				F1AB2A40D84B6AC4A3B44F93 /* CodexRateLimitTrayMacTests */,
+				A829A989469693339EA00531 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A829A989469693339EA00531 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A084B2543B32FE53CDED4EB5 /* CodexRateLimitTrayMac.app */,
+				D5341F4B0E33692C70E8024B /* CodexRateLimitTrayMacTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6F1486CCB99ECAB6CE23EE7 /* CodexRateLimitTrayMac */ = {
+			isa = PBXGroup;
+			children = (
+				1DA8AC1B08CC57FFBDE64868 /* Assets.xcassets */,
+				819E3288B49DCB2D27DCCFAE /* Entitlements.plist */,
+				ED7722A6617A9ADA3C6DFC5B /* Info.plist */,
+			);
+			path = CodexRateLimitTrayMac;
+			sourceTree = "<group>";
+		};
+		F1AB2A40D84B6AC4A3B44F93 /* CodexRateLimitTrayMacTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CodexRateLimitTrayMacTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		05AE7724C1264A775F5A3D92 /* CodexRateLimitTrayMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFFA09AB9B8433D898CA502A /* Build configuration list for PBXNativeTarget "CodexRateLimitTrayMac" */;
+			buildPhases = (
+				5A8832BC912359031A03B301 /* Sources */,
+				037A65160B219A036A247FE8 /* Resources */,
+				B5723E172EB145F15641C49F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CodexRateLimitTrayMac;
+			packageProductDependencies = (
+				4952059BA7D11A633CE3DFB3 /* Sparkle */,
+			);
+			productName = CodexRateLimitTrayMac;
+			productReference = A084B2543B32FE53CDED4EB5 /* CodexRateLimitTrayMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6AEFA355BA97BEE060C1667A /* CodexRateLimitTrayMacTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5A4E8B1D5FBED571EAC54357 /* Build configuration list for PBXNativeTarget "CodexRateLimitTrayMacTests" */;
+			buildPhases = (
+				A90B28B7165BA2AF1B2F88A4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E1EEF1CDC1D0A6ED480ABB40 /* PBXTargetDependency */,
+			);
+			name = CodexRateLimitTrayMacTests;
+			packageProductDependencies = (
+			);
+			productName = CodexRateLimitTrayMacTests;
+			productReference = D5341F4B0E33692C70E8024B /* CodexRateLimitTrayMacTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1FAFF19B11C8120A2B70E572 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 459EC8DD82B2A9962F6FE2AE /* Build configuration list for PBXProject "CodexRateLimitTrayMac" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 428A87EB3FD930DB63A751ED;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6620AC1D293ABAED76BA3BEF /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A829A989469693339EA00531 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				05AE7724C1264A775F5A3D92 /* CodexRateLimitTrayMac */,
+				6AEFA355BA97BEE060C1667A /* CodexRateLimitTrayMacTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		037A65160B219A036A247FE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				004AA0874CAEA66036EBA5A5 /* Assets.xcassets in Resources */,
+				84B414A8E20369FB009DB94D /* Entitlements.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5A8832BC912359031A03B301 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A90B28B7165BA2AF1B2F88A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E1EEF1CDC1D0A6ED480ABB40 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 05AE7724C1264A775F5A3D92 /* CodexRateLimitTrayMac */;
+			targetProxy = A43A520DF087A6BBA0D36B49 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3B60BFFD7D195D54BC06B890 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6E909185837BA0BF9E19A840 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CodexRateLimitTrayMac/Entitlements.plist;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = CodexRateLimitTrayMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.walkingwifi.CodexRateLimitTrayMac;
+				PRODUCT_NAME = CodexRateLimitTray;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7049161CC92E7D82477D6FFF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CodexRateLimitTrayMac/Entitlements.plist;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = CodexRateLimitTrayMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.walkingwifi.CodexRateLimitTrayMac;
+				PRODUCT_NAME = CodexRateLimitTray;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B48ABA898D451DDF118867F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTrayMac.app/Contents/MacOS/CodexRateLimitTrayMac";
+			};
+			name = Debug;
+		};
+		E5EE20F5CFCF666774EF20B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E77D3E2B1189F5E3FEBD00ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTrayMac.app/Contents/MacOS/CodexRateLimitTrayMac";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		459EC8DD82B2A9962F6FE2AE /* Build configuration list for PBXProject "CodexRateLimitTrayMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B60BFFD7D195D54BC06B890 /* Debug */,
+				E5EE20F5CFCF666774EF20B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5A4E8B1D5FBED571EAC54357 /* Build configuration list for PBXNativeTarget "CodexRateLimitTrayMacTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B48ABA898D451DDF118867F5 /* Debug */,
+				E77D3E2B1189F5E3FEBD00ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FFFA09AB9B8433D898CA502A /* Build configuration list for PBXNativeTarget "CodexRateLimitTrayMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7049161CC92E7D82477D6FFF /* Debug */,
+				6E909185837BA0BF9E19A840 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6620AC1D293ABAED76BA3BEF /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4952059BA7D11A633CE3DFB3 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6620AC1D293ABAED76BA3BEF /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1FAFF19B11C8120A2B70E572 /* Project object */;
+}

@@ -1,0 +1,36 @@
+name: CodexRateLimitTrayMac
+options:
+  minimumXcodeGenVersion: 2.42.0
+  deploymentTarget:
+    macOS: "13.0"
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: 2.7.0
+targets:
+  CodexRateLimitTrayMac:
+    type: application
+    platform: macOS
+    deploymentTarget: "13.0"
+    sources:
+      - CodexRateLimitTrayMac
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: jp.walkingwifi.CodexRateLimitTrayMac
+        PRODUCT_NAME: CodexRateLimitTray
+        SWIFT_VERSION: "5.0"
+        INFOPLIST_FILE: CodexRateLimitTrayMac/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CodexRateLimitTrayMac/Entitlements.plist
+        ENABLE_HARDENED_RUNTIME: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - package: Sparkle
+        product: Sparkle
+  CodexRateLimitTrayMacTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "13.0"
+    sources:
+      - CodexRateLimitTrayMacTests
+    dependencies:
+      - target: CodexRateLimitTrayMac
