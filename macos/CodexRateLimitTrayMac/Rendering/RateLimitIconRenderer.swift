@@ -72,16 +72,18 @@ struct RateLimitIconRenderer {
             pixels: &pixels,
             pixelSize: pixelSize,
             center: center,
+            innerRadius: innerRadius,
             radius: outerRadius,
-            percent: fiveHourRemainingPercent,
+            remainingPercent: weekRemainingPercent,
             color: Colors.outerDisc.rgba
         )
         fillPie(
             pixels: &pixels,
             pixelSize: pixelSize,
             center: center,
+            innerRadius: 0,
             radius: innerRadius,
-            percent: weekRemainingPercent,
+            remainingPercent: fiveHourRemainingPercent,
             color: appearance.innerDiscColor.rgba
         )
 
@@ -110,30 +112,33 @@ struct RateLimitIconRenderer {
         pixels: inout [UInt8],
         pixelSize: Int,
         center: CGPoint,
+        innerRadius: CGFloat,
         radius: CGFloat,
-        percent: Double,
+        remainingPercent: Double,
         color: RGBA
     ) {
-        let clampedPercent = max(0, min(100, percent))
-        guard clampedPercent > 0 else {
+        let clampedRemainingPercent = max(0, min(100, remainingPercent))
+        guard clampedRemainingPercent < 100 else {
             return
         }
 
-        let sweep = CGFloat(clampedPercent / 100) * 2 * .pi
+        let usedSweep = CGFloat((100 - clampedRemainingPercent) / 100) * 2 * .pi
+        let innerRadiusSquared = innerRadius * innerRadius
         for y in 0..<pixelSize {
             for x in 0..<pixelSize {
                 let coverage = coverageForPixel(x: x, y: y) { point in
                     let dx = point.x - center.x
                     let dy = point.y - center.y
-                    guard dx * dx + dy * dy <= radius * radius else {
+                    let distanceSquared = dx * dx + dy * dy
+                    guard distanceSquared <= radius * radius && distanceSquared >= innerRadiusSquared else {
                         return false
                     }
-                    if clampedPercent < 100 {
+                    if clampedRemainingPercent > 0 {
                         var angle = atan2(dx, -dy)
                         if angle < 0 {
                             angle += 2 * .pi
                         }
-                        return angle <= sweep
+                        return angle <= usedSweep
                     }
                     return true
                 }

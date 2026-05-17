@@ -8,7 +8,7 @@ struct SettingsView<Updater: UpdaterServicing>: View {
     var body: some View {
         Form {
             Section {
-                Toggle("ログイン時に起動", isOn: Binding(
+                Toggle(MenuBarFooterContent.loginItemTitle, isOn: Binding(
                     get: { loginItemViewModel.isEnabled },
                     set: { loginItemViewModel.setEnabled($0) }
                 ))

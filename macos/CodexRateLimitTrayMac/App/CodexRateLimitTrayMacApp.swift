@@ -9,7 +9,10 @@ struct CodexRateLimitTrayMacApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            MenuBarContentView(viewModel: usageViewModel)
+            MenuBarContentView(
+                viewModel: usageViewModel,
+                loginItemViewModel: loginItemViewModel
+            )
                 .frame(width: 260)
         } label: {
             Image(nsImage: usageViewModel.menuBarIcon)

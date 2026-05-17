@@ -3,6 +3,18 @@ import SwiftUI
 
 struct MenuBarContentView: View {
     @ObservedObject var viewModel: UsageViewModel
+    @ObservedObject var loginItemViewModel: LoginItemViewModel
+    private let footerActions: MenuBarFooterActions
+
+    init(
+        viewModel: UsageViewModel,
+        loginItemViewModel: LoginItemViewModel,
+        footerActions: MenuBarFooterActions = MenuBarFooterActions(quitApplication: { NSApp.terminate(nil) })
+    ) {
+        self.viewModel = viewModel
+        self.loginItemViewModel = loginItemViewModel
+        self.footerActions = footerActions
+    }
 
     var body: some View {
         VStack(spacing: 14) {
@@ -25,54 +37,109 @@ struct MenuBarContentView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(viewModel.formatter.displayRows(for: viewModel.state), id: \.self) { row in
-                    Text(row)
-                        .font(.system(.body, design: .monospaced))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(spacing: UsageRowLayout.itemSpacing) {
+                        Text(row.label)
+                            .frame(width: UsageRowLayout.labelWidth, alignment: .leading)
+                        Text(row.separator)
+                        Text(row.remainingLabel)
+
+                        Text(row.percentText)
+                            .frame(width: UsageRowLayout.percentWidth, alignment: .trailing)
+
+                        if row.resetDateText.isEmpty {
+                            Color.clear
+                                .frame(width: UsageRowLayout.resetDateWidth)
+                        } else {
+                            Text(row.resetDateText)
+                                .frame(width: UsageRowLayout.resetDateWidth, alignment: .trailing)
+                        }
+
+                        Text(row.resetTimeText)
+                            .frame(width: UsageRowLayout.resetTimeWidth, alignment: .trailing)
+                    }
+                    .fixedSize(horizontal: true, vertical: false)
                 }
             }
+            .font(.system(.callout, design: .monospaced))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: true, vertical: false)
 
             Divider()
 
-            HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 8) {
                 Button {
-                    Task { await viewModel.refresh() }
+                    loginItemViewModel.setEnabled(!loginItemViewModel.isEnabled)
                 } label: {
-                    Image(systemName: "arrow.clockwise")
-                        .frame(width: 22, height: 22)
-                }
-                .buttonStyle(.borderless)
-                .disabled(viewModel.isRefreshing)
-                .help("更新")
+                    HStack(spacing: MenuBarFooterContent.itemSpacing) {
+                        ZStack {
+                            if loginItemViewModel.isEnabled {
+                                Image(systemName: MenuBarFooterContent.selectedIndicatorSystemName)
+                                    .font(.system(size: MenuBarFooterContent.menuItemFontSize))
+                            }
+                        }
+                        .frame(width: MenuBarFooterContent.leadingIndicatorWidth)
 
-                Spacer()
+                        Text(MenuBarFooterContent.loginItemTitle)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+
+                if let errorMessage = loginItemViewModel.errorMessage {
+                    Text(errorMessage)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
 
                 Button {
-                    showSettings()
+                    footerActions.quit()
                 } label: {
-                    Image(systemName: "gearshape")
-                        .frame(width: 22, height: 22)
-                }
-                .buttonStyle(.borderless)
-                .help("設定")
+                    HStack(spacing: MenuBarFooterContent.itemSpacing) {
+                        Color.clear
+                            .frame(width: MenuBarFooterContent.leadingIndicatorWidth)
 
-                Button {
-                    NSApp.terminate(nil)
-                } label: {
-                    Image(systemName: "power")
-                        .frame(width: 22, height: 22)
+                        Text(MenuBarFooterContent.quitTitle)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
-                .buttonStyle(.borderless)
-                .help("終了")
+                .buttonStyle(.plain)
             }
+            .font(.system(size: MenuBarFooterContent.menuItemFontSize))
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
         .onAppear {
+            loginItemViewModel.refresh()
             Task { await viewModel.refresh() }
         }
     }
+}
 
-    private func showSettings() {
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+struct MenuBarFooterContent {
+    static let loginItemTitle = "ログイン時の自動起動"
+    static let quitTitle = "Codexレート制限を終了"
+    static let selectedIndicatorSystemName = "checkmark"
+    static let leadingIndicatorWidth: CGFloat = 24
+    static let itemSpacing: CGFloat = 0
+    static let menuItemFontSize = NSFont.systemFontSize
+}
+
+struct MenuBarFooterActions {
+    let quitApplication: () -> Void
+
+    func quit() {
+        quitApplication()
     }
+}
+
+private enum UsageRowLayout {
+    static let itemSpacing: CGFloat = 6
+    static let labelWidth: CGFloat = 42
+    static let percentWidth: CGFloat = 30
+    static let resetDateWidth: CGFloat = 48
+    static let resetTimeWidth: CGFloat = 48
 }

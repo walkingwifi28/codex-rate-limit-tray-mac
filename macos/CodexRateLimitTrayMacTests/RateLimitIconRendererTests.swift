@@ -19,9 +19,41 @@ final class RateLimitIconRendererTests: XCTestCase {
         XCTAssertEqual(RateLimitIconRenderer.Colors.darkInnerDisc.hexRGB, "FFFFFF")
     }
 
-    func testFullOuterDiscColorsOuterPixel() throws {
+    func testFullRemainingOuterDiscLeavesOuterPixelTransparent() throws {
         let image = RateLimitIconRenderer().renderIcon(
             fiveHourRemainingPercent: 100,
+            weekRemainingPercent: 100,
+            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
+            now: Date(timeIntervalSince1970: 0),
+            appearance: .dark,
+            size: 64,
+            drawNeedle: false
+        )
+
+        let color = try image.pixelColor(x: 32, y: 6)
+
+        XCTAssertEqual(color.alphaComponent, 0, accuracy: 0.02)
+    }
+
+    func testFullRemainingInnerDiscLeavesCenterPixelTransparent() throws {
+        let image = RateLimitIconRenderer().renderIcon(
+            fiveHourRemainingPercent: 100,
+            weekRemainingPercent: 100,
+            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
+            now: Date(timeIntervalSince1970: 0),
+            appearance: .dark,
+            size: 64,
+            drawNeedle: false
+        )
+
+        let color = try image.pixelColor(x: 32, y: 32)
+
+        XCTAssertEqual(color.alphaComponent, 0, accuracy: 0.02)
+    }
+
+    func testZeroRemainingPercentColorsOuterPixel() throws {
+        let image = RateLimitIconRenderer().renderIcon(
+            fiveHourRemainingPercent: 0,
             weekRemainingPercent: 0,
             weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
             now: Date(timeIntervalSince1970: 0),
@@ -38,25 +70,9 @@ final class RateLimitIconRendererTests: XCTestCase {
         )
     }
 
-    func testFullInnerDiscColorsCenterPixel() throws {
+    func testOuterRingDoesNotColorTransparentInnerArea() throws {
         let image = RateLimitIconRenderer().renderIcon(
             fiveHourRemainingPercent: 100,
-            weekRemainingPercent: 100,
-            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
-            now: Date(timeIntervalSince1970: 0),
-            appearance: .dark,
-            size: 64,
-            drawNeedle: false
-        )
-
-        let color = try image.pixelColor(x: 32, y: 32)
-
-        XCTAssertTrue(color.isClose(to: RateLimitIconRenderer.Colors.darkInnerDisc))
-    }
-
-    func testZeroPercentLeavesUnusedAreaTransparent() throws {
-        let image = RateLimitIconRenderer().renderIcon(
-            fiveHourRemainingPercent: 0,
             weekRemainingPercent: 0,
             weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
             now: Date(timeIntervalSince1970: 0),
@@ -65,14 +81,77 @@ final class RateLimitIconRendererTests: XCTestCase {
             drawNeedle: false
         )
 
-        let color = try image.pixelColor(x: 32, y: 6)
+        let centerColor = try image.pixelColor(x: 32, y: 32)
 
-        XCTAssertEqual(color.alphaComponent, 0, accuracy: 0.02)
+        XCTAssertEqual(centerColor.alphaComponent, 0, accuracy: 0.02)
+    }
+
+    func testOuterUsedArcEndsAtUsedPercentage() throws {
+        let image = RateLimitIconRenderer().renderIcon(
+            fiveHourRemainingPercent: 100,
+            weekRemainingPercent: 78,
+            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
+            now: Date(timeIntervalSince1970: 0),
+            appearance: .dark,
+            size: 64,
+            drawNeedle: false
+        )
+
+        let usedPortionColor = try image.pixelColor(x: 46, y: 13)
+        let remainingPortionColor = try image.pixelColor(x: 32, y: 56)
+
+        XCTAssertTrue(
+            usedPortionColor.isClose(to: RateLimitIconRenderer.Colors.outerDisc),
+            "got \(usedPortionColor.hexRGB) alpha \(usedPortionColor.alphaComponent)"
+        )
+        XCTAssertEqual(remainingPortionColor.alphaComponent, 0, accuracy: 0.02)
+    }
+
+    func testInnerUsedArcEndsAtUsedPercentage() throws {
+        let image = RateLimitIconRenderer().renderIcon(
+            fiveHourRemainingPercent: 78,
+            weekRemainingPercent: 100,
+            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
+            now: Date(timeIntervalSince1970: 0),
+            appearance: .dark,
+            size: 64,
+            drawNeedle: false
+        )
+
+        let usedPortionColor = try image.pixelColor(x: 39, y: 22)
+        let remainingPortionColor = try image.pixelColor(x: 32, y: 44)
+
+        XCTAssertTrue(
+            usedPortionColor.isClose(to: RateLimitIconRenderer.Colors.darkInnerDisc),
+            "got \(usedPortionColor.hexRGB) alpha \(usedPortionColor.alphaComponent)"
+        )
+        XCTAssertEqual(remainingPortionColor.alphaComponent, 0, accuracy: 0.02)
+    }
+
+    func testFiveHourUsageRendersOnInnerDiscAndWeekUsageRendersOnOuterRing() throws {
+        let image = RateLimitIconRenderer().renderIcon(
+            fiveHourRemainingPercent: 60,
+            weekRemainingPercent: 71,
+            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
+            now: Date(timeIntervalSince1970: 0),
+            appearance: .dark,
+            size: 64,
+            drawNeedle: false
+        )
+
+        let fiveHourOnlyColor = try image.pixelColor(x: 44, y: 39)
+        let pastWeeklyUsageColor = try image.pixelColor(x: 54, y: 45)
+
+        XCTAssertTrue(
+            fiveHourOnlyColor.isClose(to: RateLimitIconRenderer.Colors.darkInnerDisc),
+            "got \(fiveHourOnlyColor.hexRGB) alpha \(fiveHourOnlyColor.alphaComponent)"
+        )
+        XCTAssertEqual(pastWeeklyUsageColor.alphaComponent, 0, accuracy: 0.02)
     }
 
     func testOuterDiscCurvedEdgeIsAntialiased() throws {
         let image = RateLimitIconRenderer().renderIcon(
-            fiveHourRemainingPercent: 100,
+            fiveHourRemainingPercent: 0,
             weekRemainingPercent: 0,
             weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
             now: Date(timeIntervalSince1970: 0),

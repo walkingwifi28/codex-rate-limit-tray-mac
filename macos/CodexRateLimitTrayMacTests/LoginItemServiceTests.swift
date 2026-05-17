@@ -1,8 +1,34 @@
+import AppKit
 import XCTest
 @testable import CodexRateLimitTrayMac
 
 @MainActor
 final class LoginItemServiceTests: XCTestCase {
+    func testMenuBarFooterUsesRequestedLabels() {
+        XCTAssertEqual(MenuBarFooterContent.loginItemTitle, "ログイン時の自動起動")
+        XCTAssertEqual(MenuBarFooterContent.quitTitle, "Codexレート制限を終了")
+    }
+
+    func testMenuBarFooterUsesMenuStyleLeadingIndicator() {
+        XCTAssertEqual(MenuBarFooterContent.selectedIndicatorSystemName, "checkmark")
+        XCTAssertEqual(MenuBarFooterContent.leadingIndicatorWidth, 24)
+    }
+
+    func testMenuBarFooterUsesStandardSystemFontSize() {
+        XCTAssertEqual(MenuBarFooterContent.menuItemFontSize, NSFont.systemFontSize)
+    }
+
+    func testMenuBarFooterQuitActionTerminatesApplication() {
+        var didQuit = false
+        let actions = MenuBarFooterActions(quitApplication: {
+            didQuit = true
+        })
+
+        actions.quit()
+
+        XCTAssertTrue(didQuit)
+    }
+
     func testToggleUsesInjectedService() {
         let service = FakeLoginItemService(isEnabled: false)
         let viewModel = LoginItemViewModel(service: service)

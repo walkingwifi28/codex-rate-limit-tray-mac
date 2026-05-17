@@ -28,7 +28,7 @@ final class UsageFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.weekResetString(for: weeklyReset), "05/24 13:48")
     }
 
-    func testDisplayRowsAlignLabelsAndIncludeRemainingPercentAndResetTimes() throws {
+    func testDisplayRowsExposeSeparateColumnsForAlignedRendering() throws {
         let state = try makeState(
             fiveHourUsedPercent: 40,
             fiveHourReset: makeDate(month: 5, day: 17, hour: 18, minute: 48),
@@ -39,13 +39,9 @@ final class UsageFormatterTests: XCTestCase {
         let rows = formatter.displayRows(for: state)
 
         XCTAssertEqual(rows, [
-            "5時間 : 残り 60% 18:48",
-            "週   : 残り 94% 05/24 13:48",
+            UsageDisplayRow(label: "5時間", separator: ":", remainingLabel: "残り", percentText: "60%", resetDateText: "", resetTimeText: "18:48"),
+            UsageDisplayRow(label: "週", separator: ":", remainingLabel: "残り", percentText: "94%", resetDateText: "05/24", resetTimeText: "13:48"),
         ])
-        XCTAssertEqual(
-            rows[0].distance(from: rows[0].startIndex, to: rows[0].firstIndex(of: ":")!),
-            rows[1].distance(from: rows[1].startIndex, to: rows[1].firstIndex(of: ":")!)
-        )
     }
 
     func testStatusSummaryUsesRoundedRemainingPercents() throws {

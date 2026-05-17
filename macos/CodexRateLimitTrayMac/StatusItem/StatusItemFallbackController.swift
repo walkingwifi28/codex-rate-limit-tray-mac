@@ -6,7 +6,14 @@ final class StatusItemFallbackController {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     private let popover = NSPopover()
 
-    init(viewModel: UsageViewModel) {
+    convenience init(viewModel: UsageViewModel) {
+        self.init(
+            viewModel: viewModel,
+            loginItemViewModel: LoginItemViewModel(service: LoginItemService())
+        )
+    }
+
+    init(viewModel: UsageViewModel, loginItemViewModel: LoginItemViewModel) {
         statusItem.button?.image = viewModel.menuBarIcon
         statusItem.button?.toolTip = viewModel.statusSummary
         statusItem.button?.target = self
@@ -14,7 +21,12 @@ final class StatusItemFallbackController {
 
         popover.behavior = .transient
         popover.contentSize = NSSize(width: 260, height: 320)
-        popover.contentViewController = NSHostingController(rootView: MenuBarContentView(viewModel: viewModel))
+        popover.contentViewController = NSHostingController(
+            rootView: MenuBarContentView(
+                viewModel: viewModel,
+                loginItemViewModel: loginItemViewModel
+            )
+        )
     }
 
     @objc private func togglePopover() {
