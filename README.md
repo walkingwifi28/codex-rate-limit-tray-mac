@@ -11,7 +11,7 @@
 ### Quick Start (Recommended)
 
 ```bash
-brew tap walkingwifi28/codex-rate-limit-tray
+brew tap walkingwifi28/codex-rate-limit-tray https://github.com/walkingwifi28/codex-rate-limit-tray-mac.git
 brew install --cask codex-rate-limit-tray
 ```
 
@@ -50,11 +50,12 @@ xcodebuild test -scheme CodexRateLimitTrayMac -destination 'platform=macOS'
 
 配布は GitHub Releases 上の DMG/ZIP と Homebrew Cask で行います。タグ `vX.Y.Z` を push すると GitHub Actions が test、archive、署名、notarization、DMG/ZIP 生成、Sparkle appcast 生成、SHA256 生成、GitHub Release 添付を実行します。
 
-Homebrew Cask の `sha256` はリリースで生成された `.sha256` の値に置き換えてから tap に反映します。tap の検証例:
+Homebrew Cask の `sha256` はリリースで生成された `.sha256` の値に置き換えてから `Casks/codex-rate-limit-tray.rb` に反映します。このリポジトリ自体を Homebrew tap として使うため、`brew tap` には Git URL を明示します。tap の検証例:
 
 ```bash
+brew tap walkingwifi28/codex-rate-limit-tray "$PWD"
 brew audit --cask --new codex-rate-limit-tray
-brew install --cask ./Casks/codex-rate-limit-tray.rb
+brew install --cask codex-rate-limit-tray
 ```
 
 ### Code signing

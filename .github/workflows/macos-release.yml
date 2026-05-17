@@ -27,8 +27,10 @@ jobs:
         env:
           SPARKLE_PUBLIC_ED_KEY: ${{ secrets.SPARKLE_PUBLIC_ED_KEY }}
         run: |
-          test -n "$SPARKLE_PUBLIC_ED_KEY"
-          test "$SPARKLE_PUBLIC_ED_KEY" != "REPLACE_WITH_SPARKLE_PUBLIC_ED_KEY"
+          if [ -z "$SPARKLE_PUBLIC_ED_KEY" ] || [ "$SPARKLE_PUBLIC_ED_KEY" = "REPLACE_WITH_SPARKLE_PUBLIC_ED_KEY" ]; then
+            echo "::error::SPARKLE_PUBLIC_ED_KEY repository secret is required. Generate a Sparkle EdDSA key pair and store the public key in SPARKLE_PUBLIC_ED_KEY."
+            exit 1
+          fi
           /usr/libexec/PlistBuddy \
             -c "Set :SUPublicEDKey $SPARKLE_PUBLIC_ED_KEY" \
             macos/CodexRateLimitTrayMac/Info.plist

@@ -21,6 +21,27 @@ This repository ships the native macOS menu bar app from `macos/`.
 
 Store the Sparkle public EdDSA key in `SPARKLE_PUBLIC_ED_KEY` and the matching private key in `SPARKLE_PRIVATE_KEY`. The release workflow injects the public key into `SUPublicEDKey` before archiving and fails if it is missing. Keep the private key only in CI secrets or a local password manager.
 
+Generate a Sparkle EdDSA key pair locally:
+
+```bash
+SPARKLE_VERSION=2.7.0
+mkdir -p /tmp/sparkle-tools
+curl -L "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" -o /tmp/Sparkle.tar.xz
+tar -xJf /tmp/Sparkle.tar.xz -C /tmp/sparkle-tools
+GENERATE_KEYS="$(find /tmp/sparkle-tools -type f -name generate_keys | head -n 1)"
+"$GENERATE_KEYS"
+```
+
+Add the generated public key to the GitHub repository secret `SPARKLE_PUBLIC_ED_KEY`.
+
+For CI signing, export the private key and store the file contents in the GitHub repository secret `SPARKLE_PRIVATE_KEY`:
+
+```bash
+"$GENERATE_KEYS" -x /tmp/sparkle-private-key.txt
+pbcopy < /tmp/sparkle-private-key.txt
+rm /tmp/sparkle-private-key.txt
+```
+
 ## Manual Build
 
 ```bash
@@ -56,17 +77,18 @@ xcrun stapler validate /Applications/CodexRateLimitTray.app
 
 ## Homebrew Tap
 
-After publishing the DMG and updating the SHA256 in the tap repository:
+After publishing the DMG and updating `sha256` in `Casks/codex-rate-limit-tray.rb`, use this repository as a custom remote tap:
 
 ```bash
-brew tap walkingwifi28/codex-rate-limit-tray
+brew tap walkingwifi28/codex-rate-limit-tray https://github.com/walkingwifi28/codex-rate-limit-tray-mac.git
 brew install --cask codex-rate-limit-tray
 brew uninstall --cask codex-rate-limit-tray
 ```
 
-Validate from the tap repository:
+Validate from this repository:
 
 ```bash
+brew tap walkingwifi28/codex-rate-limit-tray "$PWD"
 brew audit --cask --new codex-rate-limit-tray
-brew install --cask ./Casks/codex-rate-limit-tray.rb
+brew install --cask codex-rate-limit-tray
 ```

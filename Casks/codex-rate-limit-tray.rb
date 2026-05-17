@@ -2,10 +2,10 @@ cask "codex-rate-limit-tray" do
   version "0.1.0"
   sha256 "REPLACE_WITH_DMG_SHA256"
 
-  url "https://github.com/walkingwifi28/codex-rate-limit-tray-win/releases/download/v#{version}/CodexRateLimitTray-#{version}-macos-universal.dmg"
+  url "https://github.com/walkingwifi28/codex-rate-limit-tray-mac/releases/download/v#{version}/CodexRateLimitTray-#{version}-macos-universal.dmg"
   name "Codex Rate Limit Tray"
   desc "Menu bar app showing Codex and ChatGPT rate limit usage"
-  homepage "https://github.com/walkingwifi28/codex-rate-limit-tray-win"
+  homepage "https://github.com/walkingwifi28/codex-rate-limit-tray-mac"
 
   livecheck do
     url :url
