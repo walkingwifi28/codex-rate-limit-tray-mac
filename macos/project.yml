@@ -11,6 +11,7 @@ targets:
   CodexRateLimitTrayMac:
     type: application
     platform: macOS
+    productName: CodexRateLimitTray
     deploymentTarget: "13.0"
     sources:
       - CodexRateLimitTrayMac
@@ -34,3 +35,7 @@ targets:
       - CodexRateLimitTrayMacTests
     dependencies:
       - target: CodexRateLimitTrayMac
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTray.app/Contents/MacOS/CodexRateLimitTray"
+        BUNDLE_LOADER: "$(TEST_HOST)"

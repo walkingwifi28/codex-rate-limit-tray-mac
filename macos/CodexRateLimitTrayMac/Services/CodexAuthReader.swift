@@ -32,7 +32,7 @@ struct CodexAuthReader: AuthReading {
 
         do {
             let response = try JSONDecoder().decode(AuthFile.self, from: data)
-            guard let token = response.tokens.accessToken, !token.isEmpty else {
+            guard let token = response.tokens?.accessToken, !token.isEmpty else {
                 return .tokenMissing
             }
             return .success(token)
@@ -43,7 +43,7 @@ struct CodexAuthReader: AuthReading {
 }
 
 private struct AuthFile: Decodable {
-    let tokens: Tokens
+    let tokens: Tokens?
 }
 
 private struct Tokens: Decodable {

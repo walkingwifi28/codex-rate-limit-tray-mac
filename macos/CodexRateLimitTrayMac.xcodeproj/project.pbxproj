@@ -58,6 +58,7 @@
 		325E53647F32969711F8194C /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
 		33FC8D33E39EF7380E40A7C0 /* WhamUsageParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhamUsageParser.swift; sourceTree = "<group>"; };
 		3AF6940C4DD1C32ACD2FEFBE /* StatusItemFallbackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemFallbackController.swift; sourceTree = "<group>"; };
+		3C66C63AC5F0550D8CEB4915 /* CodexRateLimitTray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodexRateLimitTray.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		461D34129BD8E98539B459E6 /* WhamUsageClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhamUsageClientTests.swift; sourceTree = "<group>"; };
 		4AFF09FC1052AE3B55D1142A /* RateLimitIconRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateLimitIconRendererTests.swift; sourceTree = "<group>"; };
 		52C576E47118AF8E03B50E90 /* LoginItemService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemService.swift; sourceTree = "<group>"; };
@@ -66,7 +67,6 @@
 		819E3288B49DCB2D27DCCFAE /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Entitlements.plist; sourceTree = "<group>"; };
 		8390E55864EE8DCED3031764 /* UsageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModelTests.swift; sourceTree = "<group>"; };
 		8D80ACDCD267A91CE97B72DB /* CodexRateLimitTrayMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexRateLimitTrayMacApp.swift; sourceTree = "<group>"; };
-		A084B2543B32FE53CDED4EB5 /* CodexRateLimitTrayMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodexRateLimitTrayMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5378B61E7B2EC358BF5DFA0 /* UpdaterServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdaterServicing.swift; sourceTree = "<group>"; };
 		B3A8FB3BCA48E6CC88EA3963 /* CodexAuthReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAuthReaderTests.swift; sourceTree = "<group>"; };
 		BEBF2E34D4F41F70AF3101E4 /* WhamUsageParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhamUsageParserTests.swift; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 		A829A989469693339EA00531 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A084B2543B32FE53CDED4EB5 /* CodexRateLimitTrayMac.app */,
+				3C66C63AC5F0550D8CEB4915 /* CodexRateLimitTray.app */,
 				D5341F4B0E33692C70E8024B /* CodexRateLimitTrayMacTests.xctest */,
 			);
 			name = Products;
@@ -228,7 +228,7 @@
 				4952059BA7D11A633CE3DFB3 /* Sparkle */,
 			);
 			productName = CodexRateLimitTrayMac;
-			productReference = A084B2543B32FE53CDED4EB5 /* CodexRateLimitTrayMac.app */;
+			productReference = 3C66C63AC5F0550D8CEB4915 /* CodexRateLimitTray.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6AEFA355BA97BEE060C1667A /* CodexRateLimitTrayMacTests */ = {
@@ -461,7 +461,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTrayMac.app/Contents/MacOS/CodexRateLimitTrayMac";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTray.app/Contents/MacOS/CodexRateLimitTray";
 			};
 			name = Debug;
 		};
@@ -533,7 +533,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTrayMac.app/Contents/MacOS/CodexRateLimitTrayMac";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodexRateLimitTray.app/Contents/MacOS/CodexRateLimitTray";
 			};
 			name = Release;
 		};

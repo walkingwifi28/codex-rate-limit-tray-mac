@@ -41,6 +41,13 @@ final class CodexAuthReaderTests: XCTestCase {
         XCTAssertEqual(reader.readAccessToken(), .tokenMissing)
     }
 
+    func testMissingTokensObjectReturnsTokenMissing() throws {
+        try writeAuthJSON(#"{}"#)
+        let reader = CodexAuthReader(baseDirectory: temporaryDirectory)
+
+        XCTAssertEqual(reader.readAccessToken(), .tokenMissing)
+    }
+
     private func writeAuthJSON(_ json: String) throws {
         let codexDirectory = temporaryDirectory.appendingPathComponent(".codex", isDirectory: true)
         try FileManager.default.createDirectory(at: codexDirectory, withIntermediateDirectories: true)

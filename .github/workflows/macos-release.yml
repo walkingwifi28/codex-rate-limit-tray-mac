@@ -88,6 +88,20 @@ jobs:
           VERSION="${VERSION#v}"
           macos/Scripts/notarize.sh "artifacts/macos/CodexRateLimitTray-${VERSION}-macos-universal.dmg"
 
+      - name: Download Sparkle tools
+        env:
+          SPARKLE_VERSION: 2.7.0
+        run: |
+          mkdir -p "$RUNNER_TEMP/sparkle-tools"
+          curl -L \
+            "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" \
+            -o "$RUNNER_TEMP/Sparkle.tar.xz"
+          tar -xJf "$RUNNER_TEMP/Sparkle.tar.xz" -C "$RUNNER_TEMP/sparkle-tools"
+          SIGN_UPDATE_PATH="$(find "$RUNNER_TEMP/sparkle-tools" -type f -name sign_update | head -n 1)"
+          test -n "$SIGN_UPDATE_PATH"
+          chmod +x "$SIGN_UPDATE_PATH"
+          echo "SIGN_UPDATE_PATH=$SIGN_UPDATE_PATH" >> "$GITHUB_ENV"
+
       - name: Generate appcast
         env:
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
@@ -96,6 +110,7 @@ jobs:
           VERSION="${VERSION#v}"
           VERSION="$VERSION" \
           SPARKLE_PRIVATE_KEY="$SPARKLE_PRIVATE_KEY" \
+          SIGN_UPDATE_PATH="$SIGN_UPDATE_PATH" \
           RELEASE_BASE_URL="https://github.com/${{ github.repository }}/releases/download/v${VERSION}" \
           ARCHIVE_PATH="$PWD/artifacts/macos/CodexRateLimitTray-${VERSION}-macos-universal.zip" \
           OUTPUT_DIR="$PWD/artifacts/macos" \

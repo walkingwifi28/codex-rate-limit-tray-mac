@@ -6,7 +6,7 @@ This repository keeps the Windows app untouched and ships the native macOS menu 
 
 - Xcode 16 or later selected with `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`
 - XcodeGen: `brew install xcodegen`
-- Sparkle 2 signing tools, including `generate_keys` and `sign_update`
+- Sparkle 2 signing tools, including `generate_keys` and `sign_update`. `generate-appcast.sh` passes `SPARKLE_PRIVATE_KEY` to `sign_update --ed-key-file -`.
 - Apple Developer ID Application certificate installed in the build keychain
 
 ## Required Secrets
@@ -36,6 +36,8 @@ APP_PATH=/path/to/CodexRateLimitTray.app VERSION=0.1.0 macos/Scripts/package-dmg
 APP_PATH=/path/to/CodexRateLimitTray.app VERSION=0.1.0 macos/Scripts/package-zip.sh
 VERSION=0.1.0 SPARKLE_PRIVATE_KEY="$SPARKLE_PRIVATE_KEY" RELEASE_BASE_URL=https://github.com/walkingwifi28/codex-rate-limit-tray-win/releases/download/v0.1.0 macos/Scripts/generate-appcast.sh
 ```
+
+If `sign_update` is not on `PATH`, pass `SIGN_UPDATE_PATH=/path/to/Sparkle/bin/sign_update`.
 
 Notarize the DMG:
 

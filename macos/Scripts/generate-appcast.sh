@@ -12,12 +12,21 @@ PUB_DATE="$(LC_ALL=C date -u '+%a, %d %b %Y %H:%M:%S %z')"
 ARCHIVE_NAME="$(basename "${ARCHIVE_PATH}")"
 ARCHIVE_SIZE="$(stat -f%z "${ARCHIVE_PATH}")"
 
-if ! command -v sign_update >/dev/null 2>&1; then
-  echo "sign_update is required. Install Sparkle tools or add Sparkle/bin to PATH." >&2
+SIGN_UPDATE="${SIGN_UPDATE_PATH:-sign_update}"
+
+if ! command -v "${SIGN_UPDATE}" >/dev/null 2>&1; then
+  echo "sign_update is required. Set SIGN_UPDATE_PATH or add Sparkle/bin to PATH." >&2
   exit 69
 fi
 
-SIGNATURE="$(SPARKLE_PRIVATE_KEY="${SPARKLE_PRIVATE_KEY}" sign_update "${ARCHIVE_PATH}" | awk -F': ' '/edSignature/ { print $2 }')"
+SIGN_OUTPUT="$(printf '%s' "${SPARKLE_PRIVATE_KEY}" | "${SIGN_UPDATE}" --ed-key-file - "${ARCHIVE_PATH}")"
+SIGNATURE="$(printf '%s\n' "${SIGN_OUTPUT}" | sed -n 's/.*sparkle:edSignature="\([^"]*\)".*/\1/p' | head -n 1)"
+
+if [[ -z "${SIGNATURE}" ]]; then
+  echo "Could not parse sparkle:edSignature from sign_update output:" >&2
+  printf '%s\n' "${SIGN_OUTPUT}" >&2
+  exit 70
+fi
 
 cat > "${APPCAST_PATH}" <<XML
 <?xml version="1.0" encoding="utf-8"?>
