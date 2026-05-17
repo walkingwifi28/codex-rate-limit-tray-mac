@@ -1,6 +1,6 @@
 # macOS Release Checklist
 
-This repository keeps the Windows app untouched and ships the native macOS menu bar app from `macos/`.
+This repository ships the native macOS menu bar app from `macos/`.
 
 ## Required Local Tools
 
@@ -36,7 +36,7 @@ Export the signed app from the archive, then package:
 ```bash
 APP_PATH=/path/to/CodexRateLimitTray.app VERSION=0.1.0 macos/Scripts/package-dmg.sh
 APP_PATH=/path/to/CodexRateLimitTray.app VERSION=0.1.0 macos/Scripts/package-zip.sh
-VERSION=0.1.0 SPARKLE_PRIVATE_KEY="$SPARKLE_PRIVATE_KEY" RELEASE_BASE_URL=https://github.com/walkingwifi28/codex-rate-limit-tray-win/releases/download/v0.1.0 macos/Scripts/generate-appcast.sh
+VERSION=0.1.0 SPARKLE_PRIVATE_KEY="$SPARKLE_PRIVATE_KEY" RELEASE_BASE_URL=https://github.com/<owner>/<repo>/releases/download/v0.1.0 macos/Scripts/generate-appcast.sh
 ```
 
 If `sign_update` is not on `PATH`, pass `SIGN_UPDATE_PATH=/path/to/Sparkle/bin/sign_update`.
