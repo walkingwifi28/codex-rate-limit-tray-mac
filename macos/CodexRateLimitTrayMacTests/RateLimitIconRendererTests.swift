@@ -70,6 +70,23 @@ final class RateLimitIconRendererTests: XCTestCase {
         XCTAssertEqual(color.alphaComponent, 0, accuracy: 0.02)
     }
 
+    func testOuterDiscCurvedEdgeIsAntialiased() throws {
+        let image = RateLimitIconRenderer().renderIcon(
+            fiveHourRemainingPercent: 100,
+            weekRemainingPercent: 0,
+            weeklyResetAt: Date(timeIntervalSince1970: 7 * 24 * 60 * 60),
+            now: Date(timeIntervalSince1970: 0),
+            appearance: .dark,
+            size: 64,
+            drawNeedle: false
+        )
+
+        let color = try image.pixelColor(x: 54, y: 9)
+
+        XCTAssertGreaterThan(color.alphaComponent, 0.1)
+        XCTAssertLessThan(color.alphaComponent, 0.95)
+    }
+
     func testNeedleProducesRedPixelsAtHalfwayThroughWeeklyWindow() throws {
         let image = RateLimitIconRenderer().renderIcon(
             fiveHourRemainingPercent: 100,

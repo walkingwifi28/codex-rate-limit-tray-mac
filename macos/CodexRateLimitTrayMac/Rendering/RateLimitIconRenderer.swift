@@ -2,6 +2,8 @@ import AppKit
 import Foundation
 
 struct RateLimitIconRenderer {
+    private static let samplesPerPixel = 4
+
     enum Appearance {
         case light
         case dark
@@ -120,21 +122,24 @@ struct RateLimitIconRenderer {
         let sweep = CGFloat(clampedPercent / 100) * 2 * .pi
         for y in 0..<pixelSize {
             for x in 0..<pixelSize {
-                let dx = CGFloat(x) + 0.5 - center.x
-                let dy = CGFloat(y) + 0.5 - center.y
-                guard dx * dx + dy * dy <= radius * radius else {
-                    continue
-                }
-                if clampedPercent < 100 {
-                    var angle = atan2(dx, -dy)
-                    if angle < 0 {
-                        angle += 2 * .pi
+                let coverage = coverageForPixel(x: x, y: y) { point in
+                    let dx = point.x - center.x
+                    let dy = point.y - center.y
+                    guard dx * dx + dy * dy <= radius * radius else {
+                        return false
                     }
-                    guard angle <= sweep else {
-                        continue
+                    if clampedPercent < 100 {
+                        var angle = atan2(dx, -dy)
+                        if angle < 0 {
+                            angle += 2 * .pi
+                        }
+                        return angle <= sweep
                     }
+                    return true
                 }
-                setPixel(&pixels, pixelSize: pixelSize, x: x, y: y, color: color)
+                if coverage > 0 {
+                    blendPixel(&pixels, pixelSize: pixelSize, x: x, y: y, color: color, coverage: coverage)
+                }
             }
         }
     }
@@ -156,20 +161,67 @@ struct RateLimitIconRenderer {
 
         for y in 0..<pixelSize {
             for x in 0..<pixelSize {
-                let point = CGPoint(x: CGFloat(x) + 0.5, y: CGFloat(y) + 0.5)
-                if distanceFromLineSegment(point: point, start: center, end: end) <= width / 2 {
-                    setPixel(&pixels, pixelSize: pixelSize, x: x, y: y, color: Colors.weekNeedle.rgba)
+                let coverage = coverageForPixel(x: x, y: y) { point in
+                    distanceFromLineSegment(point: point, start: center, end: end) <= width / 2
+                }
+                if coverage > 0 {
+                    blendPixel(
+                        &pixels,
+                        pixelSize: pixelSize,
+                        x: x,
+                        y: y,
+                        color: Colors.weekNeedle.rgba,
+                        coverage: coverage
+                    )
                 }
             }
         }
     }
 
-    private func setPixel(_ pixels: inout [UInt8], pixelSize: Int, x: Int, y: Int, color: RGBA) {
+    private func coverageForPixel(x: Int, y: Int, contains: (CGPoint) -> Bool) -> CGFloat {
+        let samples = Self.samplesPerPixel
+        var coveredSamples = 0
+
+        for sampleY in 0..<samples {
+            for sampleX in 0..<samples {
+                let point = CGPoint(
+                    x: CGFloat(x) + (CGFloat(sampleX) + 0.5) / CGFloat(samples),
+                    y: CGFloat(y) + (CGFloat(sampleY) + 0.5) / CGFloat(samples)
+                )
+                if contains(point) {
+                    coveredSamples += 1
+                }
+            }
+        }
+
+        return CGFloat(coveredSamples) / CGFloat(samples * samples)
+    }
+
+    private func blendPixel(
+        _ pixels: inout [UInt8],
+        pixelSize: Int,
+        x: Int,
+        y: Int,
+        color: RGBA,
+        coverage: CGFloat
+    ) {
         let offset = (y * pixelSize + x) * 4
-        pixels[offset] = color.red
-        pixels[offset + 1] = color.green
-        pixels[offset + 2] = color.blue
-        pixels[offset + 3] = color.alpha
+        let sourceAlpha = Double(color.alpha) / 255 * Double(coverage)
+        let inverseSourceAlpha = 1 - sourceAlpha
+
+        let destinationRed = Double(pixels[offset]) / 255
+        let destinationGreen = Double(pixels[offset + 1]) / 255
+        let destinationBlue = Double(pixels[offset + 2]) / 255
+        let destinationAlpha = Double(pixels[offset + 3]) / 255
+
+        let sourceRed = Double(color.red) / 255 * sourceAlpha
+        let sourceGreen = Double(color.green) / 255 * sourceAlpha
+        let sourceBlue = Double(color.blue) / 255 * sourceAlpha
+
+        pixels[offset] = UInt8(round(max(0, min(1, sourceRed + destinationRed * inverseSourceAlpha)) * 255))
+        pixels[offset + 1] = UInt8(round(max(0, min(1, sourceGreen + destinationGreen * inverseSourceAlpha)) * 255))
+        pixels[offset + 2] = UInt8(round(max(0, min(1, sourceBlue + destinationBlue * inverseSourceAlpha)) * 255))
+        pixels[offset + 3] = UInt8(round(max(0, min(1, sourceAlpha + destinationAlpha * inverseSourceAlpha)) * 255))
     }
 
     private func distanceFromLineSegment(point: CGPoint, start: CGPoint, end: CGPoint) -> CGFloat {
