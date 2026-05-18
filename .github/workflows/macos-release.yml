@@ -7,8 +7,10 @@ on:
       - "v*"
 
 jobs:
-  build:
+  package-preview:
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -20,119 +22,49 @@ jobs:
         working-directory: macos
 
       - name: Test
-        run: xcodebuild test -scheme CodexRateLimitTrayMac -destination 'platform=macOS'
+        run: |
+          xcodebuild test \
+            -scheme CodexRateLimitTrayMac \
+            -destination 'platform=macOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
         working-directory: macos
 
-      - name: Inject Sparkle public key
-        env:
-          SPARKLE_PUBLIC_ED_KEY: ${{ secrets.SPARKLE_PUBLIC_ED_KEY }}
+      - name: Build unsigned app
         run: |
-          if [ -z "$SPARKLE_PUBLIC_ED_KEY" ] || [ "$SPARKLE_PUBLIC_ED_KEY" = "REPLACE_WITH_SPARKLE_PUBLIC_ED_KEY" ]; then
-            echo "::error::SPARKLE_PUBLIC_ED_KEY repository secret is required. Generate a Sparkle EdDSA key pair and store the public key in SPARKLE_PUBLIC_ED_KEY."
-            exit 1
-          fi
-          /usr/libexec/PlistBuddy \
-            -c "Set :SUPublicEDKey $SPARKLE_PUBLIC_ED_KEY" \
-            macos/CodexRateLimitTrayMac/Info.plist
-
-      - name: Archive
-        run: |
-          xcodebuild -scheme CodexRateLimitTrayMac \
+          xcodebuild \
+            -scheme CodexRateLimitTrayMac \
             -configuration Release \
             -destination 'platform=macOS' \
-            archive \
-            -archivePath ../artifacts/macos/CodexRateLimitTray.xcarchive
+            -derivedDataPath ../artifacts/macos/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
         working-directory: macos
-
-      - name: Upload archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-xcarchive
-          path: artifacts/macos/CodexRateLimitTray.xcarchive
-
-  notarize-package:
-    needs: build
-    runs-on: macos-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download archive
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-xcarchive
-          path: artifacts/macos/CodexRateLimitTray.xcarchive
-
-      - name: Import Developer ID certificate
-        env:
-          CERT_BASE64: ${{ secrets.MACOS_DEVELOPER_ID_APPLICATION_CERT_BASE64 }}
-          CERT_PASSWORD: ${{ secrets.MACOS_DEVELOPER_ID_APPLICATION_CERT_PASSWORD }}
-        run: |
-          security create-keychain -p "$RUNNER_TEMP" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "$RUNNER_TEMP" build.keychain
-          echo "$CERT_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
-          security import "$RUNNER_TEMP/cert.p12" -k build.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$RUNNER_TEMP" build.keychain
-
-      - name: Export signed app
-        run: |
-          mkdir -p artifacts/macos/export
-          cp -R artifacts/macos/CodexRateLimitTray.xcarchive/Products/Applications/CodexRateLimitTray.app artifacts/macos/export/
-          codesign --force --deep --options runtime --timestamp --sign "Developer ID Application" artifacts/macos/export/CodexRateLimitTray.app
 
       - name: Package DMG and ZIP
         env:
           VERSION: ${{ github.ref_name }}
         run: |
           VERSION="${VERSION#v}"
-          APP_PATH="$PWD/artifacts/macos/export/CodexRateLimitTray.app" VERSION="$VERSION" OUTPUT_DIR="$PWD/artifacts/macos" macos/Scripts/package-dmg.sh
-          APP_PATH="$PWD/artifacts/macos/export/CodexRateLimitTray.app" VERSION="$VERSION" OUTPUT_DIR="$PWD/artifacts/macos" macos/Scripts/package-zip.sh
-
-      - name: Notarize DMG
-        env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          VERSION: ${{ github.ref_name }}
-        run: |
-          VERSION="${VERSION#v}"
-          macos/Scripts/notarize.sh "artifacts/macos/CodexRateLimitTray-${VERSION}-macos-universal.dmg"
-
-      - name: Download Sparkle tools
-        env:
-          SPARKLE_VERSION: 2.7.0
-        run: |
-          mkdir -p "$RUNNER_TEMP/sparkle-tools"
-          curl -L \
-            "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" \
-            -o "$RUNNER_TEMP/Sparkle.tar.xz"
-          tar -xJf "$RUNNER_TEMP/Sparkle.tar.xz" -C "$RUNNER_TEMP/sparkle-tools"
-          SIGN_UPDATE_PATH="$(find "$RUNNER_TEMP/sparkle-tools" -type f -name sign_update | head -n 1)"
-          test -n "$SIGN_UPDATE_PATH"
-          chmod +x "$SIGN_UPDATE_PATH"
-          echo "SIGN_UPDATE_PATH=$SIGN_UPDATE_PATH" >> "$GITHUB_ENV"
-
-      - name: Generate appcast
-        env:
-          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
-          VERSION: ${{ github.ref_name }}
-        run: |
-          VERSION="${VERSION#v}"
-          VERSION="$VERSION" \
-          SPARKLE_PRIVATE_KEY="$SPARKLE_PRIVATE_KEY" \
-          SIGN_UPDATE_PATH="$SIGN_UPDATE_PATH" \
-          RELEASE_BASE_URL="https://github.com/${{ github.repository }}/releases/download/v${VERSION}" \
-          ARCHIVE_PATH="$PWD/artifacts/macos/CodexRateLimitTray-${VERSION}-macos-universal.zip" \
-          OUTPUT_DIR="$PWD/artifacts/macos" \
-          macos/Scripts/generate-appcast.sh
+          if [ "$GITHUB_REF_TYPE" != "tag" ]; then
+            VERSION="0.1.0-preview.${GITHUB_RUN_NUMBER}"
+          fi
+          APP_PATH="$PWD/artifacts/macos/DerivedData/Build/Products/Release/CodexRateLimitTray.app"
+          test -d "$APP_PATH"
+          codesign --force --deep --sign - "$APP_PATH"
+          APP_PATH="$APP_PATH" VERSION="$VERSION" OUTPUT_DIR="$PWD/artifacts/macos" macos/Scripts/package-dmg.sh
+          APP_PATH="$APP_PATH" VERSION="$VERSION" OUTPUT_DIR="$PWD/artifacts/macos" macos/Scripts/package-zip.sh
 
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v2
         with:
+          prerelease: true
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('preview-{0}', github.run_number) }}
+          name: ${{ github.ref_type == 'tag' && github.ref_name || format('Preview {0}', github.run_number) }}
           files: |
             artifacts/macos/*.dmg
             artifacts/macos/*.zip
-            artifacts/macos/appcast.xml
             artifacts/macos/*.sha256
