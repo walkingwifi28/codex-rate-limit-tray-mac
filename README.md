@@ -13,6 +13,8 @@
 ```bash
 brew tap walkingwifi28/codex-rate-limit-tray https://github.com/walkingwifi28/codex-rate-limit-tray-mac.git
 brew install --cask codex-rate-limit-tray
+xattr -dr com.apple.quarantine /Applications/CodexRateLimitTray.app # Apple Developer 未署名のため、quarantine属性を削除して起動
+open /Applications/CodexRateLimitTray.app
 ```
 
 アンインストールする場合:
@@ -61,6 +63,13 @@ brew install --cask codex-rate-limit-tray
 ### Unsigned Preview Builds
 
 preview build は Apple Developer ID で署名されておらず、notarization も通していません。証明書不要の ad hoc signing のみ行います。初回起動時に Gatekeeper の警告が出る場合は、Finder でアプリを右クリックして `開く` を選択してください。
+
+それでも `開いていません` と表示される場合は、Homebrew でインストールしたアプリの quarantine 属性を削除してから起動します。
+
+```bash
+xattr -dr com.apple.quarantine /Applications/CodexRateLimitTray.app
+open /Applications/CodexRateLimitTray.app
+```
 
 Apple Developer Program を使えるようになったら、Developer ID 署名、notarization、Sparkle appcast を release workflow に戻します。
 

@@ -17,6 +17,12 @@ cask "codex-rate-limit-tray" do
 
   app "CodexRateLimitTray.app"
 
+  caveats <<~EOS
+    This preview build is not Developer ID signed or notarized.
+    If macOS blocks the app on first launch, run:
+      xattr -dr com.apple.quarantine /Applications/CodexRateLimitTray.app
+  EOS
+
   zap trash: [
     "~/Library/Preferences/jp.walkingwifi.CodexRateLimitTrayMac.plist",
     "~/Library/Application Support/CodexRateLimitTray",

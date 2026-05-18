@@ -56,7 +56,14 @@ The GitHub release is marked as a prerelease because the app is not Developer ID
 
 ## Gatekeeper
 
-Unsigned preview builds may be blocked on first launch. Users can open the app from Finder by right-clicking `CodexRateLimitTray.app` and choosing `Open`.
+Unsigned preview builds may be blocked on first launch. Users can first try opening the app from Finder by right-clicking `CodexRateLimitTray.app` and choosing `Open`.
+
+If macOS still shows `"CodexRateLimitTray.app" は開いていません`, remove the quarantine attribute from the installed app and open it again:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/CodexRateLimitTray.app
+open /Applications/CodexRateLimitTray.app
+```
 
 Do not present unsigned preview builds as a fully trusted macOS distribution. Once Apple Developer Program access is available, restore Developer ID signing, notarization, and Sparkle appcast generation before calling the release stable.
 
