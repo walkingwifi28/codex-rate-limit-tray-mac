@@ -4,20 +4,6 @@ import Foundation
 struct RateLimitIconRenderer {
     private static let samplesPerPixel = 4
 
-    enum Appearance {
-        case light
-        case dark
-
-        var innerDiscColor: NSColor {
-            switch self {
-            case .light:
-                return Colors.lightInnerDisc
-            case .dark:
-                return Colors.darkInnerDisc
-            }
-        }
-    }
-
     struct Geometry: Equatable {
         let outerDiameter: CGFloat
         let innerDiameter: CGFloat
@@ -26,10 +12,6 @@ struct RateLimitIconRenderer {
     enum Colors {
         static let outerDisc = NSColor(srgbRed: CGFloat(0x33) / 255, green: CGFloat(0x9C) / 255, blue: CGFloat(0xFF) / 255, alpha: 1)
         static let weekNeedle = NSColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
-        static let lightBackground = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1)
-        static let lightInnerDisc = NSColor(srgbRed: CGFloat(0x1A) / 255, green: CGFloat(0x1C) / 255, blue: CGFloat(0x1F) / 255, alpha: 1)
-        static let darkBackground = NSColor(srgbRed: CGFloat(0x18) / 255, green: CGFloat(0x18) / 255, blue: CGFloat(0x18) / 255, alpha: 1)
-        static let darkInnerDisc = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1)
     }
 
     static func calculateGeometry(outerDiameter: CGFloat) -> Geometry {
@@ -39,25 +21,20 @@ struct RateLimitIconRenderer {
     func renderIcon(
         state: UsageState,
         now: Date = Date(),
-        appearance: Appearance,
         size: CGFloat = 22
     ) -> NSImage {
         renderIcon(
-            fiveHourRemainingPercent: state.fiveHour.remainingPercent,
             weekRemainingPercent: state.week.remainingPercent,
             weeklyResetAt: state.week.resetAt,
             now: now,
-            appearance: appearance,
             size: size
         )
     }
 
     func renderIcon(
-        fiveHourRemainingPercent: Double,
         weekRemainingPercent: Double,
         weeklyResetAt: Date,
         now: Date,
-        appearance: Appearance,
         size: CGFloat,
         drawNeedle: Bool = true
     ) -> NSImage {
@@ -76,15 +53,6 @@ struct RateLimitIconRenderer {
             radius: outerRadius,
             remainingPercent: weekRemainingPercent,
             color: Colors.outerDisc.rgba
-        )
-        fillPie(
-            pixels: &pixels,
-            pixelSize: pixelSize,
-            center: center,
-            innerRadius: 0,
-            radius: innerRadius,
-            remainingPercent: fiveHourRemainingPercent,
-            color: appearance.innerDiscColor.rgba
         )
 
         if drawNeedle {

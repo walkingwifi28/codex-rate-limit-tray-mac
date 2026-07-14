@@ -12,15 +12,10 @@ struct UsageDisplayRow: Equatable, Hashable {
 struct UsageFormatter {
     let title = "Codex レート制限"
 
-    private let fiveHourResetFormatter: DateFormatter
     private let weekResetDateFormatter: DateFormatter
     private let weekResetTimeFormatter: DateFormatter
 
     init(timeZone: TimeZone = .current) {
-        fiveHourResetFormatter = UsageFormatter.makeDateFormatter(
-            dateFormat: "HH:mm",
-            timeZone: timeZone
-        )
         weekResetDateFormatter = UsageFormatter.makeDateFormatter(
             dateFormat: "MM/dd",
             timeZone: timeZone
@@ -33,10 +28,6 @@ struct UsageFormatter {
 
     func displayPercent(for window: UsageWindow) -> Int {
         Int(window.remainingPercent.rounded(.awayFromZero))
-    }
-
-    func fiveHourResetString(for date: Date) -> String {
-        fiveHourResetFormatter.string(from: date)
     }
 
     func weekResetString(for date: Date) -> String {
@@ -54,12 +45,6 @@ struct UsageFormatter {
     func displayRows(for state: UsageState) -> [UsageDisplayRow] {
         [
             displayRow(
-                label: "5時間",
-                window: state.fiveHour,
-                resetDateText: "",
-                resetTimeText: fiveHourResetString(for: state.fiveHour.resetAt)
-            ),
-            displayRow(
                 label: "週",
                 window: state.week,
                 resetDateText: weekResetDateString(for: state.week.resetAt),
@@ -69,7 +54,7 @@ struct UsageFormatter {
     }
 
     func statusSummary(for state: UsageState) -> String {
-        "Codexレート制限 : \(displayPercent(for: state.fiveHour))% / \(displayPercent(for: state.week))%"
+        "Codexレート制限 : \(displayPercent(for: state.week))%"
     }
 
     private func displayRow(label: String, window: UsageWindow, resetDateText: String, resetTimeText: String) -> UsageDisplayRow {

@@ -17,7 +17,7 @@ final class UsageViewModelTests: XCTestCase {
     }
 
     func testSuccessfulAuthAndFetchUpdatesState() async {
-        let expected = Self.successState(fiveHourUsed: 40, weekUsed: 6)
+        let expected = Self.successState(weekUsed: 6)
         let usageClient = FakeUsageClient(state: expected)
         let viewModel = UsageViewModel(
             authReader: FakeAuthReader(result: .success("abc")),
@@ -51,9 +51,8 @@ final class UsageViewModelTests: XCTestCase {
         _ = await (first, second)
     }
 
-    private static func successState(fiveHourUsed: Double = 40, weekUsed: Double = 6) -> UsageState {
+    private static func successState(weekUsed: Double = 6) -> UsageState {
         UsageState.success(
-            fiveHour: UsageWindow(usedPercent: fiveHourUsed, resetAt: Date(timeIntervalSince1970: 1_715_781_600)),
             week: UsageWindow(usedPercent: weekUsed, resetAt: Date(timeIntervalSince1970: 1_716_094_800))
         )
     }

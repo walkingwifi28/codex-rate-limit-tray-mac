@@ -21,17 +21,13 @@ final class UsageFormatterTests: XCTestCase {
     }
 
     func testResetFormatsUseCurrentTimeZone() throws {
-        let fiveHourReset = try makeDate(month: 5, day: 17, hour: 18, minute: 48)
         let weeklyReset = try makeDate(month: 5, day: 24, hour: 13, minute: 48)
 
-        XCTAssertEqual(formatter.fiveHourResetString(for: fiveHourReset), "18:48")
         XCTAssertEqual(formatter.weekResetString(for: weeklyReset), "05/24 13:48")
     }
 
     func testDisplayRowsExposeSeparateColumnsForAlignedRendering() throws {
         let state = try makeState(
-            fiveHourUsedPercent: 40,
-            fiveHourReset: makeDate(month: 5, day: 17, hour: 18, minute: 48),
             weekUsedPercent: 6,
             weekReset: makeDate(month: 5, day: 24, hour: 13, minute: 48)
         )
@@ -39,30 +35,24 @@ final class UsageFormatterTests: XCTestCase {
         let rows = formatter.displayRows(for: state)
 
         XCTAssertEqual(rows, [
-            UsageDisplayRow(label: "5時間", separator: ":", remainingLabel: "残り", percentText: "60%", resetDateText: "", resetTimeText: "18:48"),
             UsageDisplayRow(label: "週", separator: ":", remainingLabel: "残り", percentText: "94%", resetDateText: "05/24", resetTimeText: "13:48"),
         ])
     }
 
     func testStatusSummaryUsesRoundedRemainingPercents() throws {
         let state = try makeState(
-            fiveHourUsedPercent: 39.5,
-            fiveHourReset: makeDate(month: 5, day: 17, hour: 18, minute: 48),
             weekUsedPercent: 6.4,
             weekReset: makeDate(month: 5, day: 24, hour: 13, minute: 48)
         )
 
-        XCTAssertEqual(formatter.statusSummary(for: state), "Codexレート制限 : 61% / 94%")
+        XCTAssertEqual(formatter.statusSummary(for: state), "Codexレート制限 : 94%")
     }
 
     private func makeState(
-        fiveHourUsedPercent: Double,
-        fiveHourReset: Date,
         weekUsedPercent: Double,
         weekReset: Date
     ) throws -> UsageState {
         UsageState.success(
-            fiveHour: UsageWindow(usedPercent: fiveHourUsedPercent, resetAt: fiveHourReset),
             week: UsageWindow(usedPercent: weekUsedPercent, resetAt: weekReset)
         )
     }

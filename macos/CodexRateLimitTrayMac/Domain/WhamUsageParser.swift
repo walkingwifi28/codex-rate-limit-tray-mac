@@ -4,17 +4,12 @@ struct WhamUsageParser {
     func parse(_ data: Data) -> Result<UsageState, UsageErrorKind> {
         do {
             let response = try JSONDecoder().decode(UsageResponse.self, from: data)
+            let weeklyWindow = UsageWindow(
+                usedPercent: response.rateLimit.primaryWindow.usedPercent,
+                resetAt: Date(timeIntervalSince1970: response.rateLimit.primaryWindow.resetAt)
+            )
             return .success(
-                UsageState.success(
-                    fiveHour: UsageWindow(
-                        usedPercent: response.rateLimit.primaryWindow.usedPercent,
-                        resetAt: Date(timeIntervalSince1970: response.rateLimit.primaryWindow.resetAt)
-                    ),
-                    week: UsageWindow(
-                        usedPercent: response.rateLimit.secondaryWindow.usedPercent,
-                        resetAt: Date(timeIntervalSince1970: response.rateLimit.secondaryWindow.resetAt)
-                    )
-                )
+                UsageState.success(week: weeklyWindow)
             )
         } catch {
             return .failure(.invalidResponse)
@@ -32,11 +27,9 @@ private struct UsageResponse: Decodable {
 
 private struct RateLimit: Decodable {
     let primaryWindow: RateLimitWindow
-    let secondaryWindow: RateLimitWindow
 
     enum CodingKeys: String, CodingKey {
         case primaryWindow = "primary_window"
-        case secondaryWindow = "secondary_window"
     }
 }
 

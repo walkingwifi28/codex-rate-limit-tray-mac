@@ -2,7 +2,7 @@ import XCTest
 @testable import CodexRateLimitTrayMac
 
 final class WhamUsageParserTests: XCTestCase {
-    func testParsesPrimaryAsFiveHourAndSecondaryAsWeek() throws {
+    func testParsesPrimaryAsWeeklyWindowAndIgnoresSecondary() throws {
         let data = Data("""
         {
           "rate_limit": {
@@ -14,10 +14,16 @@ final class WhamUsageParserTests: XCTestCase {
 
         let state = try XCTUnwrap(WhamUsageParser().parse(data).successValue)
 
-        XCTAssertEqual(state.fiveHour.usedPercent, 25.5)
-        XCTAssertEqual(state.fiveHour.resetAt, Date(timeIntervalSince1970: 1_715_781_600))
-        XCTAssertEqual(state.week.usedPercent, 80)
-        XCTAssertEqual(state.week.resetAt, Date(timeIntervalSince1970: 1_716_094_800))
+        XCTAssertEqual(state.week.usedPercent, 25.5)
+        XCTAssertEqual(state.week.resetAt, Date(timeIntervalSince1970: 1_715_781_600))
+    }
+
+    func testMissingSecondaryWindowIsAccepted() throws {
+        let data = Data(#"{"rate_limit":{"primary_window":{"used_percent":25.5,"reset_at":1715781600},"secondary_window":null}}"#.utf8)
+
+        let state = try XCTUnwrap(WhamUsageParser().parse(data).successValue)
+
+        XCTAssertEqual(state.week.usedPercent, 25.5)
     }
 
     func testInvalidJSONReturnsInvalidResponse() {
@@ -27,7 +33,7 @@ final class WhamUsageParserTests: XCTestCase {
     }
 
     func testMissingFieldsReturnsInvalidResponse() {
-        let data = Data(#"{"rate_limit":{"primary_window":{"used_percent":25.5,"reset_at":1715781600}}}"#.utf8)
+        let data = Data(#"{"rate_limit":{}}"#.utf8)
 
         let result = WhamUsageParser().parse(data)
 
