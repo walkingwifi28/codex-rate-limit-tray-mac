@@ -1,6 +1,6 @@
 cask "codex-rate-limit-tray" do
-  version "0.1.1"
-  sha256 "c0f8487bbe62cf44aa8b84ef90cb3045a12b3cfd8f61c0157b9ebc17115fecec"
+  version "0.1.14"
+  sha256 "4e0ec5462da571046ab63f8ec373a05c7621ef4c66b8e6da8e605d122407d7d3"
 
   url "https://github.com/walkingwifi28/codex-rate-limit-tray-mac/releases/download/v#{version}/CodexRateLimitTray-#{version}-macos-universal.dmg"
   name "Codex Rate Limit Tray"
@@ -13,7 +13,7 @@ cask "codex-rate-limit-tray" do
   end
 
   auto_updates false
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "CodexRateLimitTray.app"
 
