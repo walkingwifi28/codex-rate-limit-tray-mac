@@ -34,6 +34,7 @@ final class UsageViewModel: ObservableObject {
         self.state = initialState
         self.menuBarIcon = iconRenderer.renderIcon(
             state: initialState,
+            appearance: Self.currentAppearance,
             size: 22
         )
     }
@@ -84,6 +85,7 @@ final class UsageViewModel: ObservableObject {
     func updateMenuBarIcon() {
         menuBarIcon = iconRenderer.renderIcon(
             state: state,
+            appearance: Self.currentAppearance,
             size: 22
         )
         menuBarIcon.isTemplate = false
@@ -94,4 +96,8 @@ final class UsageViewModel: ObservableObject {
         formatter.statusSummary(for: state)
     }
 
+    private static var currentAppearance: RateLimitIconRenderer.Appearance {
+        let name = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua])
+        return name == .darkAqua ? .dark : .light
+    }
 }
