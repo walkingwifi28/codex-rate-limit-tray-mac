@@ -28,32 +28,39 @@ final class UsageFormatterTests: XCTestCase {
 
     func testDisplayRowsExposeSeparateColumnsForAlignedRendering() throws {
         let state = try makeState(
-            weekUsedPercent: 6,
+            fiveHourUsedPercent: 6,
+            weekUsedPercent: 19,
+            fiveHourReset: makeDate(month: 5, day: 24, hour: 13, minute: 48),
             weekReset: makeDate(month: 5, day: 24, hour: 13, minute: 48)
         )
 
         let rows = formatter.displayRows(for: state)
 
         XCTAssertEqual(rows, [
-            UsageDisplayRow(label: "週", separator: ":", remainingLabel: "残り", percentText: "94%", resetDateText: "05/24", resetTimeText: "13:48"),
+            UsageDisplayRow(label: "5時間", separator: ":", remainingLabel: "残り", percentText: "94%", resetDateText: "", resetTimeText: "13:48"),
+            UsageDisplayRow(label: "週", separator: ":", remainingLabel: "残り", percentText: "81%", resetDateText: "05/24", resetTimeText: "13:48"),
         ])
     }
 
     func testStatusSummaryUsesRoundedRemainingPercents() throws {
         let state = try makeState(
-            weekUsedPercent: 6.4,
+            fiveHourUsedPercent: 6.4,
+            weekUsedPercent: 19.5,
+            fiveHourReset: makeDate(month: 5, day: 24, hour: 13, minute: 48),
             weekReset: makeDate(month: 5, day: 24, hour: 13, minute: 48)
         )
 
-        XCTAssertEqual(formatter.statusSummary(for: state), "Codexレート制限 : 94%")
+        XCTAssertEqual(formatter.statusSummary(for: state), "Codexレート制限 : 94% / 81%")
     }
 
     private func makeState(
+        fiveHourUsedPercent: Double,
         weekUsedPercent: Double,
+        fiveHourReset: Date,
         weekReset: Date
     ) throws -> UsageState {
         UsageState.success(
-            fiveHour: UsageWindow(usedPercent: weekUsedPercent, resetAt: weekReset),
+            fiveHour: UsageWindow(usedPercent: fiveHourUsedPercent, resetAt: fiveHourReset),
             week: UsageWindow(usedPercent: weekUsedPercent, resetAt: weekReset)
         )
     }
