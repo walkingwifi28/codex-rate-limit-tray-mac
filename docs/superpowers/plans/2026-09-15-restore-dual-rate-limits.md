@@ -135,7 +135,7 @@ Update the test fixture to construct separate five-hour and weekly windows, then
 ]
 ```
 
-Also change the summary assertion to expect `Codexレート制限 : 94% / 81%`.
+Also change the summary assertion to expect `Codexレート制限 : 94% / 81%`, using a weekly used value of `19.5` so the existing `.awayFromZero` rounding produces `81%` remaining.
 
 - [ ] **Step 2: Run the focused formatter tests and verify the expected failure.**
 
