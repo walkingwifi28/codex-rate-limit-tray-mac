@@ -1,6 +1,6 @@
 cask "codex-rate-limit-tray" do
-  version "0.1.14"
-  sha256 "4e0ec5462da571046ab63f8ec373a05c7621ef4c66b8e6da8e605d122407d7d3"
+  version "0.2.0"
+  sha256 "82024f727a1e508ea7ec4ec0748d6f2aa717ee0f0e015ce2428306aeab9c6ae9"
 
   url "https://github.com/walkingwifi28/codex-rate-limit-tray-mac/releases/download/v#{version}/CodexRateLimitTray-#{version}-macos-universal.dmg"
   name "Codex Rate Limit Tray"
