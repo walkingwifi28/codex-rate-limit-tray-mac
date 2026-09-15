@@ -17,7 +17,8 @@ final class WhamUsageClientTests: XCTestCase {
         let state = await makeClient().fetchUsage(accessToken: "abc")
 
         XCTAssertFalse(state.hasError)
-        XCTAssertEqual(state.week.usedPercent, 25.5)
+        XCTAssertEqual(state.fiveHour.usedPercent, 25.5)
+        XCTAssertEqual(state.week.usedPercent, 80)
     }
 
     func testUnauthorizedMapsToAuthentication() async {
@@ -77,7 +78,7 @@ final class WhamUsageClientTests: XCTestCase {
         {
           "rate_limit": {
             "primary_window": { "used_percent": 25.5, "reset_at": 1715781600 },
-            "secondary_window": null
+            "secondary_window": { "used_percent": 80, "reset_at": 1716094800 }
           }
         }
         """.utf8)

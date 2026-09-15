@@ -20,6 +20,7 @@ struct UsageWindow: Equatable {
 }
 
 struct UsageState: Equatable {
+    let fiveHour: UsageWindow
     let week: UsageWindow
     let errorKind: UsageErrorKind
     let errorMessage: String?
@@ -28,8 +29,9 @@ struct UsageState: Equatable {
         errorKind != .none
     }
 
-    static func success(week: UsageWindow) -> UsageState {
+    static func success(fiveHour: UsageWindow, week: UsageWindow) -> UsageState {
         UsageState(
+            fiveHour: fiveHour,
             week: week,
             errorKind: .none,
             errorMessage: nil
@@ -40,6 +42,7 @@ struct UsageState: Equatable {
         let now = Date()
         let empty = UsageWindow(usedPercent: 0, resetAt: now)
         return UsageState(
+            fiveHour: empty,
             week: empty,
             errorKind: kind,
             errorMessage: message

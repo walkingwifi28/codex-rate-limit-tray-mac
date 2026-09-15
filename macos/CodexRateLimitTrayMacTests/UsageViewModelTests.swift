@@ -53,6 +53,7 @@ final class UsageViewModelTests: XCTestCase {
 
     private static func successState(weekUsed: Double = 6) -> UsageState {
         UsageState.success(
+            fiveHour: UsageWindow(usedPercent: weekUsed, resetAt: Date(timeIntervalSince1970: 1_716_094_800)),
             week: UsageWindow(usedPercent: weekUsed, resetAt: Date(timeIntervalSince1970: 1_716_094_800))
         )
     }

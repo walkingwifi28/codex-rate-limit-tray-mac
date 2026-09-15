@@ -53,6 +53,7 @@ final class UsageFormatterTests: XCTestCase {
         weekReset: Date
     ) throws -> UsageState {
         UsageState.success(
+            fiveHour: UsageWindow(usedPercent: weekUsedPercent, resetAt: weekReset),
             week: UsageWindow(usedPercent: weekUsedPercent, resetAt: weekReset)
         )
     }
