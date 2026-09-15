@@ -28,6 +28,7 @@ final class UsageViewModel: ObservableObject {
         self.formatter = formatter
         self.iconRenderer = iconRenderer
         let initialState = UsageState.success(
+            fiveHour: UsageWindow(usedPercent: 0, resetAt: Date()),
             week: UsageWindow(usedPercent: 0, resetAt: Date())
         )
         self.state = initialState
