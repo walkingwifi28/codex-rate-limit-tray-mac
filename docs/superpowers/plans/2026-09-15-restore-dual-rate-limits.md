@@ -15,6 +15,7 @@
 - Keep the weekly reset needle and the existing outer-ring geometry.
 - Keep invalid/missing required API fields mapped to `UsageErrorKind.invalidResponse`.
 - Do not add dependencies or change authentication, scheduling, or network endpoints.
+- Run every `xcodebuild` command from the `macos/` directory, where `CodexRateLimitTrayMac.xcodeproj` is located.
 - Run focused tests after each task and the full macOS XCTest suite before completion.
 
 ---
